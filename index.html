@@ -91,38 +91,46 @@
   </div>
 
   <script>
-    const form = document.getElementById('data-form');
-    const endpoint = 'https://v1.nocodeapi.com/kesiswaanxvp/google_sheets/IdWQovTMYqWSXYud?tabId=Sheet1';
+  const form = document.getElementById('data-form');
+  const endpoint = 'https://v1.nocodeapi.com/kesiswaanxvp/google_sheets/IdWQovTMYqWSXYud?tabId=Sheet1';
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-      const row = [
-        document.getElementById('name').value,
-        document.getElementById('dob').value,
-        document.getElementById('address').value,
-        document.getElementById('phone').value,
-        document.getElementById('gender').value
-      ];
+    const name = document.getElementById('name').value.trim();
+    const dob = document.getElementById('dob').value;
+    const address = document.getElementById('address').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const gender = document.getElementById('gender').value;
 
-      try {
-        const response = await fetch(endpoint, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ data: [row] })
-        });
+    if (!name || !dob || !address || !phone || !gender) {
+      alert("Please fill in all fields.");
+      return;
+    }
 
-        const result = await response.json();
-        if (result.message === 'Success') {
-          alert('Data saved!');
-          form.reset();
-        } else {
-          alert('Error: ' + JSON.stringify(result));
-        }
-      } catch (err) {
-        alert('Error: ' + err.message);
+    const row = [name, dob, address, phone, gender];
+
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ data: [row] })
+      });
+
+      const result = await response.json();
+      console.log(result);
+
+      if (result.message === 'Success') {
+        alert('Data saved!');
+        form.reset();
+      } else {
+        alert('Error from API: ' + JSON.stringify(result));
       }
-    });
-  </script>
+    } catch (err) {
+      alert('Error: ' + err.message);
+    }
+  });
+</script>
+
 </body>
 </html>
