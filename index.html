@@ -69,35 +69,38 @@
 
   <script>
     const form = document.getElementById('data-form');
-    const endpoint = 'https://script.google.com/macros/s/AKfycbwQClS-y4sjErPOPc9RDksBXJPnRAjSdwRK1udnj-8HC4DGhCDnfqfZCPYwoVwbTJgA/exec'; // Replace with your actual URL
+const endpoint = 'https://v1.nocodeapi.com/kesiswaanxvp/google_sheets/IdWQovTMYqWSXYud?tabId=Sheet1';
 
-    form.addEventListener('submit', async (e) => {
+form.addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  const formData = new URLSearchParams();
-  formData.append('name', document.getElementById('name').value);
-  formData.append('dob', document.getElementById('dob').value);
-  formData.append('address', document.getElementById('address').value);
-  formData.append('phone', document.getElementById('phone').value);
-  formData.append('gender', document.getElementById('gender').value);
+  const row = [
+    document.getElementById('name').value,
+    document.getElementById('dob').value,
+    document.getElementById('address').value,
+    document.getElementById('phone').value,
+    document.getElementById('gender').value
+  ];
 
   try {
     const response = await fetch(endpoint, {
       method: 'POST',
-      body: formData, // no JSON, just form data
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ data: [row] })
     });
 
     const result = await response.json();
-    if (result.result === 'success') {
+    if (result.message === 'Success') {
       alert('Data saved!');
       form.reset();
     } else {
-      alert('Failed to save data.');
+      alert('Error: ' + JSON.stringify(result));
     }
   } catch (err) {
     alert('Error: ' + err.message);
   }
 });
+
   </script>
 </body>
 </html>
