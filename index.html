@@ -72,33 +72,32 @@
     const endpoint = 'https://script.google.com/macros/s/AKfycbwQClS-y4sjErPOPc9RDksBXJPnRAjSdwRK1udnj-8HC4DGhCDnfqfZCPYwoVwbTJgA/exec'; // Replace with your actual URL
 
     form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const data = {
-        name: document.getElementById('name').value,
-        dob: document.getElementById('dob').value,
-        address: document.getElementById('address').value,
-        phone: document.getElementById('phone').value,
-        gender: document.getElementById('gender').value,
-      };
+  e.preventDefault();
 
-      try {
-        const response = await fetch(endpoint, {
-          method: 'POST',
-          body: JSON.stringify(data),
-          headers: { 'Content-Type': 'application/json' },
-        });
+  const formData = new URLSearchParams();
+  formData.append('name', document.getElementById('name').value);
+  formData.append('dob', document.getElementById('dob').value);
+  formData.append('address', document.getElementById('address').value);
+  formData.append('phone', document.getElementById('phone').value);
+  formData.append('gender', document.getElementById('gender').value);
 
-        const result = await response.json();
-        if (result.result === 'success') {
-          alert('Data saved!');
-          form.reset();
-        } else {
-          alert('Failed to save data.');
-        }
-      } catch (err) {
-        alert('Error: ' + err.message);
-      }
+  try {
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      body: formData, // no JSON, just form data
     });
+
+    const result = await response.json();
+    if (result.result === 'success') {
+      alert('Data saved!');
+      form.reset();
+    } else {
+      alert('Failed to save data.');
+    }
+  } catch (err) {
+    alert('Error: ' + err.message);
+  }
+});
   </script>
 </body>
 </html>
