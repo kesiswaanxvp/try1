@@ -108,13 +108,13 @@
       return;
     }
 
-    const row = [name, dob, address, phone, gender];
+    const row = [[name, dob, address, phone, gender]];
 
     try {
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ data: [row] })
+        body: JSON.stringify({ data: row })
       });
 
       const result = await response.json();
@@ -131,6 +131,7 @@
     }
   });
 </script>
+
 
 </body>
 </html>
